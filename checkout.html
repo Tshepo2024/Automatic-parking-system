@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .details {
+            margin-bottom: 20px;
+        }
+    </style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <p>Check-in time: <span id="checkInTime"></span></p>
+    <p>Duration: <span id="duration"></span></p>
+    <p>Total Amount: <span id="totalAmount"></span></p>
+    <p>Ticket Number: <span id="ticketNumber"></span></p> <!-- Display the ticket number -->
+
+    <button onclick="checkoutUser()">Checkout</button>
+
+    <script>
+        function loadCheckoutPage() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!loggedInUser || !loggedInUser.startTime) {
+                alert('You have not checked in yet!');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            const startTime = new Date(loggedInUser.startTime);
+            const currentTime = new Date();
+
+            // Calculate the duration and amount here
+            const durationInMilliseconds = currentTime - startTime;
+            const durationInMinutes = Math.floor(durationInMilliseconds / (1000 * 60));
+            const durationIn30MinIntervals = Math.ceil(durationInMinutes / 30);
+            const ratePer30Minutes = 5;
+            const totalAmount = (durationIn30MinIntervals * ratePer30Minutes).toFixed(2);
+
+            document.getElementById('checkInTime').textContent = startTime.toLocaleString();
+            document.getElementById('duration').textContent = `${durationIn30MinIntervals * 30} minutes`;
+            document.getElementById('totalAmount').textContent = `R${totalAmount}`;
+
+            // Display the ticket number
+            document.getElementById('ticketNumber').textContent = loggedInUser.ticketNumber;
+        }
+
+        function checkoutUser() {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && loggedInUser.startTime) {
+                // Redirect to payment page
+                window.location.href = 'choose-payment.html';
+            }
+        }
+
+        function logoutWithoutCheckout() {
+            alert('You will need to check out when you log back in.');
+            window.location.href = 'index.html'; // Log out and redirect to login
+        }
+
+        window.onload = loadCheckoutPage;
+    </script>
+</body>
+</html>
+
+

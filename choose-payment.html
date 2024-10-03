@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Payment | Parking System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .thank-you-message {
+            display: none; /* Hide the message by default */
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-choice-container">
+        <h2>Choose Payment Method</h2>
+        <button onclick="payOnline()">Pay Online</button>
+        <button onclick="payOffline()">Pay Offline</button>
+        
+        <!-- Thank You Message Section -->
+        <div id="thankYouMessage" class="thank-you-message">
+            <h3>Thank you for your visit!</h3>
+            <p>Your reference number is: <span id="referenceNumber"></span></p>
+            <p>Your ticket number is: <span id="ticketNumber"></span></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Function to handle online payment redirection
+        function payOnline() {
+            window.location.href = 'payment.html'; // Redirect to payment.html
+        }
+
+        // Function to handle offline payment and display message
+        function payOffline() {
+            // Generate reference and ticket numbers
+            const referenceNumber = generateReferenceNumber();
+            const ticketNumber = generateTicketNumber();
+
+            // Display the thank you message
+            document.getElementById('referenceNumber').textContent = referenceNumber;
+            document.getElementById('ticketNumber').textContent = ticketNumber;
+            document.getElementById('thankYouMessage').style.display = 'block'; // Show the message
+        }
+
+        // Generate Random Reference Number
+        function generateReferenceNumber() {
+            return Math.floor(100000 + Math.random() * 900000).toString(); // Generate a random reference number
+        }
+
+        // Generate Random Ticket Number
+        function generateTicketNumber() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let ticketNumber = '';
+
+            for (let i = 0; i < 8; i++) {
+                ticketNumber += chars[Math.floor(Math.random() * chars.length)];
+            }
+
+            return ticketNumber;
+        }
+    </script>
+</body>
+</html>
